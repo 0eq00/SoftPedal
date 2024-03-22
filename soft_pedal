@@ -1,16 +1,15 @@
 desc:0eq00 Soft Pedal
 //tags: MIDI processing
 
-slider1:8<1,127,1>velocity difference
+slider1:0<0,15,1>MIDI Channel for Soft Pedal OFF
+slider2:1<0,15,1>MIDI Channel for Soft Pedal ON
+slider3:8<0,127,1>velocity difference
 
 in_pin:none
 out_pin:none
 
 @init
 isPedalOn=0;
-
-@slider
-soft=slider1;
 
 @block
 while (
@@ -31,13 +30,28 @@ midirecv(ts,msg1,msg23) ?
   (
     isPedalOn == 1 ?
     (
-      vel = vel - soft;
+      vel = vel - slider3;
       vel < 1 ? vel = 1;
       msg23 = note+vel*256;
-    );
-  );
 
-  midisend(ts,msg1,msg23);
+      midisend(ts,0x90+slider2,msg23);
+    ):
+    (
+      midisend(ts,0x90+slider1,msg23);
+    );
+  ) :
+  (
+    // channel message
+    m < 0xF0 ?
+    (
+      midisend(ts,(msg1&0xF0)+slider1,msg23);
+      slider2 != slider1 ? midisend(ts,(msg1&0xF0)+slider2,msg23);
+    ) :
+    // system message
+    (
+      midisend(ts,msg1,msg23);
+    )
+  );
 
   bla=1;
 );
