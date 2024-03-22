@@ -35,6 +35,10 @@ private:
     // access the processor object that created it.
     SoftPedalAudioProcessor& audioProcessor;
 
+    juce::Slider ch1Slider;
+    juce::Label ch1Label;
+    juce::Slider ch2Slider;
+    juce::Label ch2Label;
     juce::Slider velocitySlider;
     juce::Label velocityLabel;
     juce::ToggleButton softButton{ "Soft Pedal" };

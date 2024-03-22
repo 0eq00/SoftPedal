@@ -22,7 +22,10 @@ SoftPedalAudioProcessor::SoftPedalAudioProcessor()
                        )
 #endif
 {
-    softVelocity = 8;
+    addParameter(ch1 = new juce::AudioParameterInt("ch1", "Channel1", 1, 16, 1 ));
+    addParameter(ch2 = new juce::AudioParameterInt("ch2", "Channel2", 1, 16, 1 ));
+    addParameter(vel = new juce::AudioParameterInt("vel", "Velocity", 0, 127, 8 ));
+
     isSoftPedalOn = false;
     lastIn = 1;
     lastOut = 1;
@@ -160,25 +163,41 @@ void SoftPedalAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
 
             if (this->isSoftPedalOn)
             {
-                this->lastOut = message.getVelocity() - this->softVelocity;
+                this->lastOut = message.getVelocity() - (*(this->vel));
                 if (this->lastOut < 1)
                     this->lastOut = 1;
 
-                message = juce::MidiMessage::noteOn(message.getChannel(),
-                    message.getNoteNumber(),
-                    (juce::uint8)this->lastOut);
+                message = juce::MidiMessage::noteOn(*(this->ch2), message.getNoteNumber(), (juce::uint8)this->lastOut);
+                processedMidi.addEvent(message, time);
             }
             else
             {
                 this->lastOut = this->lastIn;
+
+                message.setChannel(*(this->ch1));
+                processedMidi.addEvent(message, time);
             }
         }
-
-        processedMidi.addEvent(message, time);
+        else
+        {
+            if (message.getChannel() == 0)
+            {
+                processedMidi.addEvent(message, time);
+            }
+            else
+            {
+                message.setChannel(*(this->ch1));
+                processedMidi.addEvent(message, time);
+                if (this->ch1 != this->ch2)
+                {
+                    message.setChannel(*(this->ch2));
+                    processedMidi.addEvent(message, time);
+                }
+            }
+        }
     }
 
     midiMessages.swapWith(processedMidi);
-
 /*
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
@@ -222,6 +241,12 @@ juce::AudioProcessorEditor* SoftPedalAudioProcessor::createEditor()
 //==============================================================================
 void SoftPedalAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
+    std::unique_ptr<juce::XmlElement> xml(new juce::XmlElement("0eq00:SoftPedal"));
+    xml->setAttribute("ch1", (int)(*ch1));
+    xml->setAttribute("ch2", (int)(*ch2));
+    xml->setAttribute("vel", (int)(*vel));
+    copyXmlToBinary(*xml, destData);
+
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
@@ -229,6 +254,18 @@ void SoftPedalAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 
 void SoftPedalAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+
+    if (xmlState.get() != nullptr)
+    {
+        if (xmlState->hasTagName("0eq00:SoftPedal"))
+        {
+            *ch1 = xmlState->getIntAttribute("ch1");
+            *ch2 = xmlState->getIntAttribute("ch2");
+            *vel = xmlState->getIntAttribute("vel");
+        }
+    }
+
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
 }

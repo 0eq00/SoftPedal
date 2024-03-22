@@ -53,7 +53,10 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    int softVelocity;
+    juce::AudioParameterInt* ch1;
+    juce::AudioParameterInt* ch2;
+    juce::AudioParameterInt* vel;
+
     bool isSoftPedalOn;
     int lastIn;
     int lastOut;

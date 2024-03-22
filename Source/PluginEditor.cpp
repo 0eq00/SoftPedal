@@ -15,27 +15,47 @@ SoftPedalAudioProcessorEditor::SoftPedalAudioProcessorEditor (SoftPedalAudioProc
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize(400, 300);
+    setSize(500, 300);
     startTimerHz(60);
 
+    ch1Slider.setSliderStyle(juce::Slider::LinearHorizontal);
+    ch1Slider.setRange(1, 16, 1);
+    ch1Slider.setBounds(180, 20, 250, 20);
+    ch1Slider.setValue(*(audioProcessor.ch1));
+    addAndMakeVisible(&ch1Slider);
+
+    ch1Label.setText("Ch1 - Soft Pedal OFF", juce::dontSendNotification);
+    ch1Label.attachToComponent(&ch1Slider, true);
+
+    ch2Slider.setSliderStyle(juce::Slider::LinearHorizontal);
+    ch2Slider.setRange(1, 16, 1);
+    ch2Slider.setBounds(180, 60, 250, 20);
+    ch2Slider.setValue(*(audioProcessor.ch2));
+    addAndMakeVisible(&ch2Slider);
+
+    ch2Label.setText("Ch2 - Soft Pedal ON", juce::dontSendNotification);
+    ch2Label.attachToComponent(&ch2Slider, true);
+
     velocitySlider.setSliderStyle(juce::Slider::LinearHorizontal);
-    velocitySlider.setRange(0.0, 127.0, 1.0);
-    velocitySlider.setBounds(100, 20, 250, 20);
-    velocitySlider.setValue(audioProcessor.softVelocity);
+    velocitySlider.setRange(0, 127, 1);
+    velocitySlider.setBounds(180, 100, 250, 20);
+    velocitySlider.setValue(*(audioProcessor.vel));
     addAndMakeVisible(&velocitySlider);
 
-    velocityLabel.setText("velocity", juce::dontSendNotification);
+    velocityLabel.setText("Velocity Decrease", juce::dontSendNotification);
     velocityLabel.attachToComponent(&velocitySlider, true);
 
     softButton.setEnabled(false);
-    softButton.setBounds(45, 60, 250,20);
+    softButton.setBounds(180, 140, 250,20);
     addAndMakeVisible(softButton);
 
     messageLabel.setText("message", juce::dontSendNotification);
     messageLabel.setEnabled(false);
-    messageLabel.setBounds(45, 100, 250, 20);
+    messageLabel.setBounds(180, 180, 250, 20);
     addAndMakeVisible(messageLabel);
 
+    ch1Slider.addListener(this);
+    ch2Slider.addListener(this);
     velocitySlider.addListener(this);
 }
 
@@ -62,7 +82,9 @@ void SoftPedalAudioProcessorEditor::resized()
 
 void SoftPedalAudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
 {
-    audioProcessor.softVelocity = (int)(velocitySlider.getValue());
+    *(audioProcessor.ch1) = (int)(ch1Slider.getValue());
+    *(audioProcessor.ch2) = (int)(ch2Slider.getValue());
+    *(audioProcessor.vel) = (int)(velocitySlider.getValue());
 }
 
 void SoftPedalAudioProcessorEditor::timerCallback()
