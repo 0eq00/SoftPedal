@@ -1,6 +1,10 @@
 # Soft Pedal
+- NOTE ON messages, it switches output destination channel depending status of the soft pedal ON or OFF.
+- NOTE ON messages, during the soft pedal is ON, it decreases the velocity.
 
 ![001](https://github.com/0eq00/SoftPedal/assets/90118026/20a72fa5-9205-4fd0-96e2-e57ced7b7515)
+
+There are two versions, one is works on [ReaJS](https://www.reaper.fm/reaplugs/ "ReaPlugs") by Cockos, and another one is a VST3 plugin using the JUCE framework.
 
 ## For example, how to use ?
 
