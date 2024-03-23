@@ -1,7 +1,6 @@
 # Soft Pedal
 
-![001](https://github.com/0eq00/SoftPedal/assets/90118026/7906f012-5bff-4fa4-bceb-b66d450f27db)
-
+![001](https://github.com/0eq00/SoftPedal/assets/90118026/20a72fa5-9205-4fd0-96e2-e57ced7b7515)
 
 ## For example, how to use ?
 
