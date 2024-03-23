@@ -39,10 +39,10 @@ private:
     juce::Label ch1Label;
     juce::Slider ch2Slider;
     juce::Label ch2Label;
-    juce::Slider velocitySlider;
-    juce::Label velocityLabel;
+    juce::Slider velSlider;
+    juce::Label velLabel;
     juce::ToggleButton softButton{ "Soft Pedal" };
-    juce::Label messageLabel;
+    juce::Label msgLabel;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SoftPedalAudioProcessorEditor)
 };
