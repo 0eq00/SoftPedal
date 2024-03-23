@@ -1,6 +1,7 @@
 # Soft Pedal
-- NOTE ON messages, it switches output destination channel depending status of the soft pedal ON or OFF.
-- NOTE ON messages, during the soft pedal is ON, it decreases the velocity.
+- MIDI NOTE ON messages, it switches output destination channel depending status of the soft pedal ON or OFF. 
+- Any other MIDI messages, it outputs to both channels.
+- During the soft pedal is ON, the NOTE ON velocity decreases.
 
 ![001](https://github.com/0eq00/SoftPedal/assets/90118026/20a72fa5-9205-4fd0-96e2-e57ced7b7515)
 
