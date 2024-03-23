@@ -3,7 +3,7 @@
 - Other MIDI messages are output to both channels.
 - NOTE ON velocity decreases while the soft pedal is ON.
 
-![001](https://github.com/0eq00/SoftPedal/assets/90118026/20a72fa5-9205-4fd0-96e2-e57ced7b7515)
+![001](https://github.com/0eq00/SoftPedal/assets/90118026/f3043499-0688-43ce-83fc-6db63b34b8c4)
 
 There are two versions, one is works on [ReaJS](https://www.reaper.fm/reaplugs/ "ReaPlugs") by Cockos, and another one is a VST3 plugin using the JUCE framework.
 
