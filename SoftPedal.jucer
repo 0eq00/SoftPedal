@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="YVl8zt" name="SoftPedal" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
-              pluginFormats="buildVST3" pluginCharacteristicsValue="pluginIsMidiEffectPlugin,pluginProducesMidiOut,pluginWantsMidiIn"
+              pluginFormats="buildVST3" pluginCharacteristicsValue="pluginIsMidiEffectPlugin,pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn"
               companyName="0eq00" companyWebsite="https://github.com/0eq00">
   <MAINGROUP id="KWzV4Y" name="SoftPedal">
     <GROUP id="{9814B013-6625-FA8E-599D-D02259B17F9B}" name="Source">
